@@ -1,44 +1,55 @@
 set nocompatible
+
+" Let pathogen import all plugins in the bundle folder
 set sessionoptions-=options
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 call pathogen#infect()
 call pathogen#helptags()
 
+" Some decent defaults for windows
 source $VIMRUNTIME/vimrc_example.vim
 source $VIMRUNTIME/mswin.vim
 behave mswin
+set selection=inclusive
 
+" Store all swap files in this folder
 set directory=C:\\Users\\Magnus\\vimswp//
 
 colorscheme wombat
 set guifont=consolas:h10
-set scrolloff=2
-set selection=inclusive
 set encoding=utf-8
 
 set winminheight=0
 set winminwidth=0
 "set winheight=999
 "set winwidth=999
+set scrolloff=2
 
 set nobk
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
+
+" Use one space after '.' when joining lines, not two.
 set nojoinspaces
 
 nnoremap <F5> :GundoToggle<CR>
 
 au BufNewFile,BufRead *.json set filetype=json
+" Recalculate syntax highlighting from start of file when pressing <C-l>.
 autocmd BufEnter * :syntax sync fromstart
 
+" Use rope for omni-completion in python files
+autocmd FileType python setlocal omnifunc=RopeCompleteFunc
+
+" Decent fallback foldsettings for python files
 set fdm=indent
 set foldnestmax=2
-"More subtle folds:
+" More subtle folds
 set fcs=fold:\ 
 
-"""Window rearrangement shortcuts."""
+" Window rearrangement shortcuts.
 if version >= 700
     function! HOpen(dir,what_to_open)
         let [type,name] = a:what_to_open
@@ -93,6 +104,7 @@ if version >= 700
     noremap <c-w>P :call HPasteWindow('here')<cr>
 endif
 
+" Don't know where this comes from.
 set diffexpr=MyDiff()
 function MyDiff()
     let opt = '-a --binary '
@@ -117,4 +129,3 @@ function MyDiff()
     endif
     silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
-
